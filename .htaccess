@@ -1,0 +1,11 @@
+<FilesMatch "\.db|\.txt|\.md$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+  </IfModule>
+</FilesMatch>
+Options -Indexes
+Options +FollowSymLinks
+DirectoryIndex index.php
