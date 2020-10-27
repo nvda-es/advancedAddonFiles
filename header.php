@@ -44,7 +44,7 @@ switch (intval($_SESSION['role'])){
 		break;
 }
 ?>
-<p><a href="logout.php">Logout</a></p>
+<p><a href="profile.php">Update your profile</a> | <a href="logout.php">Logout</a></p>
 </section>
 <?php
 }else{

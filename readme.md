@@ -36,37 +36,37 @@ We are quite sure this application contains a few bugs, despite the time we have
 The database structure is designed as follows:
 
 addons table:
-id: integer primary key
-author: text
-name: text
-summary: text
-description: text
-url: text
+* id: integer primary key
+* author: text
+* name: text
+* summary: text
+* description: text
+* url: text
 
 links table:
-id: integer (add-on identifier from add-ons table)
-file: text (key passed as parameter to be redirected to the download link)
-version: text
-channel: text (stable, dev, lts...)
-minimum: text (year.version.0)
-lasttested: text (year.version.0)
-downloads: integer
-link: text
+* id: integer (add-on identifier from add-ons table)
+* file: text (key passed as parameter to be redirected to the download link)
+* version: text
+* channel: text (stable, dev, lts...)
+* minimum: text (year.version.0)
+* lasttested: text (year.version.0)
+* downloads: integer
+* link: text
 
 permissions table:
-user integer
-addon integer
+* user integer
+* addon integer
 
 users table:
-id integer primary key
-username text
-fullname text
-email text
-password text
-role integer (0=author, 1=reviewer, 2=admin)
+* id integer primary key
+* username text
+* fullname text
+* email text
+* password text
+* role integer (0=author, 1=reviewer, 2=admin)
 
 log table:
-id integer primary key
-date text
-user text
-message text
+* id integer primary key
+* date text
+* user text
+* message text
