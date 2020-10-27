@@ -13,7 +13,11 @@ if (isset($_SESSION['username'])){
 			$username=SQLite3::escapeString($_POST['username']);
 			$fullname=SQLite3::escapeString($_POST['fullname']);
 			$email=SQLite3::escapeString($_POST['email']);
-			$password=password_hash(SQLite3::escapeString($_POST['password']), PASSWORD_DEFAULT);
+			if ($_POST['password']!=""){
+				$password=password_hash(SQLite3::escapeString($_POST['password']), PASSWORD_DEFAULT);
+			}else{
+				$password="";
+			}
 			$role=SQLite3::escapeString($_POST['role']);
 			$userid=SQLite3::escapeString($_POST['userid']);
 			if ($userid==""){
@@ -21,7 +25,12 @@ if (isset($_SESSION['username'])){
 				$db->exec("insert into users (id, username, fullname, email, password, role) values (".$userid.", '".$username."', '".$fullname."', '".$email."', '".$password."', ".$role.")");
 				logMessage($db, "Created new user account: ".$username.". ".$_POST['log']);
 			}else{
-				$db->exec("update users set username='".$username."', fullname='".$fullname."', email='".$email."', password='".$password."', role=".$role." where id=".$userid);
+				$query="update users set username='".$username."', fullname='".$fullname."', email='".$email."', ";
+				if ($password!=""){
+					$query=$query."password='".$password."', ";
+				}
+				$query=$query."role=".$role." where id=".$userid;
+				$db->exec($query);
 				logMessage($db, "Updated user account: ".$username.". ".$_POST['log']);
 			}
 		}elseif ($_GET['action']=="delete"){
@@ -46,7 +55,7 @@ if (isset($_SESSION['username'])){
 <th>Username</th>
 <th>Full name</th>
 <th>E-mail address</th>
-<th>Password</th>
+<th>Password hash</th>
 <th>Role (0=author, 1=reviewer, 2=admin)</th>
 <th>Edit</th>
 <th>Delete</th>
@@ -79,7 +88,7 @@ $result->finalize();
 <label for="email">E-mail address*</label>
 <input type="email" name="email" id="email" required="" aria-required="true"/>
 <label for="password">Password*</label>
-<input type="text" name="password" id="password" required="" aria-required="true" title="Provide a password you don't use anywhere else"/>
+<input type="text" name="password" id="password" required="" aria-required="true" title="Provide a password you don't use anywhere else. Leave empty if you are updating an user account and don't want to change the password"/>
 <label for="role">User role*</label>
 <select id="role" name="role" required="" aria-required="true">
 <option id="optionAuthor" value="0">Author</option>
@@ -132,7 +141,8 @@ function editUser(e){
 	username.value=row.childNodes[3].textContent;
 	fullname.value=row.childNodes[5].textContent;
 	email.value=row.childNodes[7].textContent;
-	password.value=row.childNodes[9].textContent;
+	password.removeAttribute("aria-required");
+	password.removeAttribute("required");
 	switch(row.childNodes[11].textContent){
 		case "0":
 			optionAuthor.selected="selected";
@@ -159,6 +169,8 @@ function adduser(e){
 	username.focus();
 	username.parentNode.reset();
 	userid.value="";
+	password.required="";
+	password.setAttribute("aria-required", true);
 }
 document.getElementById("adduser").addEventListener("click", adduser);
 function cancelEdit(e){
