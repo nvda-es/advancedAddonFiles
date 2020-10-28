@@ -96,7 +96,7 @@ while ($row=$result->fetchArray(SQLITE3_NUM)){
 	echo "<tr id='".$row[0]."'>\n";
 	foreach ($row as $item){
 		if ($item===$row[0]){
-			echo "<th scope='row'><a href='addon.php?id=".$row[0]."'>".$item."</a></td>\n";
+			echo "<th scope='row'><a href='addon.php?id=".$row[0]."'>".$item."</a></th>\n";
 		}else{
 			echo "<td>".$item."</td>\n";
 		}
