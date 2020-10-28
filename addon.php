@@ -28,7 +28,7 @@ if (isset($_SESSION['username'])){
 				$link=SQLite3::escapeString($_POST['link']);
 				if ($db->query("select file from links where file='".$file."'")->fetchArray(SQLITE3_NUM)){
 					logMessage($db, "Updated download information for add-on ".$addonid.". ".$_POST['log']);
-					$db->exec("update links set version='".$version."', channel='".$channel."', minimum='".$minimum."', lasttested='".$lasttested."', link='".$link."', downloads=0 where id=".$addonid." and file='".$file."'");
+					$db->exec("update links set file='".$file."', version='".$version."', channel='".$channel."', minimum='".$minimum."', lasttested='".$lasttested."', link='".$link."', downloads=0 where id=".$addonid." and file='".$file."'");
 				}else{
 					logMessage($db, "Added download information for add-on ".$addonid.". ".$_POST['log']);
 					$db->exec("insert into links (id, file, version, channel, minimum, lasttested, link, downloads) values (".$addonid.", '".$file."', '".$version."', '".$channel."', '".$minimum."', '".$lasttested."', '".$link."', 0)");
