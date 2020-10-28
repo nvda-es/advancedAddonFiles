@@ -206,14 +206,13 @@ function newaddon(e){
 	focusElement=e.target;
 	editform.style.display="block";
 	addonauthor.focus();
-	editform.reset();
-	addonid.value="";
 }
 document.getElementById("newaddon").addEventListener("click", newaddon);
 function cancelRemove(e){
 	focusElement.focus();
 	deleteform.style.display="none";
 	focusElement=null;
+	deleteaddon.value="";
 }
 <?php
 }
@@ -222,6 +221,12 @@ function cancelEdit(e){
 	focusElement.focus();
 	editform.style.display="none";
 	focusElement=null;
+	addonid.value="";
+	addonauthor.value="";
+	addonname.value="";
+	addonsummary.value="";
+	addondescription.value="";
+	addonurl.value="";
 }
 </script>
 <?php
