@@ -167,8 +167,6 @@ function adduser(e){
 	focusElement=e.target;
 	editform.style.display="block";
 	username.focus();
-	username.parentNode.reset();
-	userid.value="";
 	password.required="";
 	password.setAttribute("aria-required", true);
 }
@@ -177,11 +175,18 @@ function cancelEdit(e){
 	focusElement.focus();
 	editform.style.display="none";
 	focusElement=null;
+	userid.value="";
+	username.value="";
+	fullname.value="";
+	email.value="";
+	password.value="";
+	optionAuthor.selected="selected";
 }
 function cancelRemove(e){
 	focusElement.focus();
 	deleteform.style.display="none";
 	focusElement=null;
+	deleteuser.value="";
 }
 </script>
 <?php

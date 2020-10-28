@@ -154,18 +154,24 @@ function newlink(e){
 	focusElement=e.target;
 	editform.style.display="block";
 	file.focus();
-	editform.reset();
 }
 document.getElementById("newlink").addEventListener("click", newlink);
 function cancelEdit(e){
 	focusElement.focus();
 	editform.style.display="none";
 	focusElement=null;
+	file.value="";
+	version.value="";
+	channel.value="";
+	minimum.value="";
+	lasttested.value="";
+	link.value="";
 }
 function cancelRemove(e){
 	focusElement.focus();
 	deleteform.style.display="none";
 	focusElement=null;
+	deletelink.value="";
 }
 </script>
 <?php
