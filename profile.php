@@ -37,6 +37,7 @@ if (isset($_SESSION['username'])){
 <input type="submit" name="update" value="Update account details"/>
 </form>
 <?php
+		include("footer.php");
 	}
 	$db->close();
 }else{
