@@ -15,6 +15,7 @@ if (isset($_SESSION['username'])){
 		}
 		$query=$query." where id=".$_SESSION['id'];
 		$db->exec($query);
+		header("Location: index.php");
 	}else{
 		include ("header.php");
 		$result=$db->query("select username, fullname, email from users where id=".$_SESSION['id']);
