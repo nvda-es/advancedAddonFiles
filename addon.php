@@ -85,7 +85,7 @@ $result->finalize();
 <h2>Create or update download link for this add-on</h2>
 <form method="post" action="addon.php?action=edit&id=<?php echo $addonid; ?>" role="form">
 <label for="file">Add-on key*</label>
-<input type="text" required="" aria-required="true" id="file" name="file" title="Short string used to redirect the user to the donwload link"/>
+<input type="text" required="" aria-required="true" id="file" name="file" title="Short string used to redirect the user to the download link"/>
 <label for="version">Add-on version*</label>
 <input type="text" required="" aria-required="true" id="version" name="version"/>
 <label for="channel">Add-on channel*</label>
