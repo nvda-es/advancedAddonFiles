@@ -87,7 +87,7 @@ if ($_SESSION['role']!="0"){
 </thead>
 <tbody>
 <?php
-$query="select * from addons";
+$query="select * from addons order by id desc";
 if ($_SESSION['role']=="0"){
 	$query="select * from addons, permissions where addons.id=permissions.addon and permissions.user=".$_SESSION['id'];
 }
