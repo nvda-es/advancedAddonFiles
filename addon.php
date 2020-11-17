@@ -84,22 +84,22 @@ $result->finalize();
 <div id="edit-form" style="display:none">
 <h2>Create or update download link for this add-on</h2>
 <form method="post" action="addon.php?action=edit&id=<?php echo $addonid; ?>" role="form">
-<label for="file">Add-on key*</label>
-<input type="text" required="" aria-required="true" id="file" name="file" title="Short string used to redirect the user to the download link"/>
-<label for="version">Add-on version*</label>
-<input type="text" required="" aria-required="true" id="version" name="version"/>
-<label for="channel">Add-on channel*</label>
-<input type="text" id="channel" name="channel" required="" aria-required="true" title="stable, dev, lts..."/>
-<label for="minimum">Minimum NVDA version supported*</label>
-<input type="text" required="" aria-required="true" id="minimum" name="minimum" title="year.version.0"/>
-<label for="lasttested">Last tested NVDA version*</label>
-<input type="text" required="" aria-required="true" id="lasttested" name="lasttested" title="year.version.0"/>
-<label for="link">Full download link*</label>
-<input type="url" required="" aria-required="true" id="link" name="link"/>
-<label for="log">Log message</label>
-<textarea id="log" name="log" title="Optional log message displayed for this operation"></textarea>
-<input type="submit" value="Submit"/>
-<button type="button" onclick="cancelEdit();">Cancel</button>
+<p><label for="file">Add-on key*</label>
+<input type="text" required="" aria-required="true" id="file" name="file" title="Short string used to redirect the user to the download link"/></p>
+<p><label for="version">Add-on version*</label>
+<input type="text" required="" aria-required="true" id="version" name="version"/></p>
+<p><label for="channel">Add-on channel*</label>
+<input type="text" id="channel" name="channel" required="" aria-required="true" title="stable, dev, lts..."/></p>
+<p><label for="minimum">Minimum NVDA version supported*</label>
+<input type="text" required="" aria-required="true" id="minimum" name="minimum" title="year.version.0"/></p>
+<p><label for="lasttested">Last tested NVDA version*</label>
+<input type="text" required="" aria-required="true" id="lasttested" name="lasttested" title="year.version.0"/></p>
+<p><label for="link">Full download link*</label>
+<input type="url" required="" aria-required="true" id="link" name="link"/></p>
+<p><label for="log">Log message</label>
+<textarea id="log" name="log" title="Optional log message displayed for this operation"></textarea></p>
+<p><input type="submit" value="Submit"/>
+<button type="button" onclick="cancelEdit();">Cancel</button></p>
 </form>
 </div>
 <div id="delete-form" style="display:none">
@@ -107,10 +107,10 @@ $result->finalize();
 <form method="post" action="addon.php?action=delete&id=<?php echo $addonid; ?>" role="form">
 <p>Are you sure you want to remove this download link from the database? This operation cannot be undone.</p>
 <input type="hidden" id="deletelink" name="file"/>
-<label for="log2">Log message</label>
-<textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea>
-<input type="submit" id="confirmDelete" value="Delete link permanently"/>
-<button type="button" onclick="cancelRemove();">Cancel</button>
+<p><label for="log2">Log message</label>
+<textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea></p>
+<p><input type="submit" id="confirmDelete" value="Delete link permanently"/>
+<button type="button" onclick="cancelRemove();">Cancel</button></p>
 </form>
 </div>
 <script>

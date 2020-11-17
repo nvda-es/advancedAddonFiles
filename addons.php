@@ -115,17 +115,17 @@ $result->finalize();
 <h2>Create or update add-on</h2>
 <form method="post" action="addons.php?action=edit" role="form">
 <input type="hidden" name="addonid" id="addonid"/>
-<label for="addonauthor">Add-on author*</label>
-<input type="text" id="addonauthor" name="addonauthor" required="" aria-required="true"/>
-<label for="addonname">Add-on name*</label>
-<input type="text" name="addonname" id="addonname" required="" aria-required="true"/>
-<label for="addonsummary">Add-on summary*</label>
-<input type="text" name="addonsummary" id="addonsummary" aria-required="true" required=""/>
-<label for="addondescription">Add-on description*</label>
-<textarea name="addondescription" id="addondescription" required="" aria-required="true"></textarea>
-<label for="addonurl">Add-on URL*</label>
-<input type="url" name="addonurl" id="addonurl" required="" aria-required="true"/>
-<label for="addonowner">Add-on owner*</label>
+<p><label for="addonauthor">Add-on author*</label>
+<input type="text" id="addonauthor" name="addonauthor" required="" aria-required="true"/></p>
+<p><label for="addonname">Add-on name*</label>
+<input type="text" name="addonname" id="addonname" required="" aria-required="true"/></p>
+<p><label for="addonsummary">Add-on summary*</label>
+<input type="text" name="addonsummary" id="addonsummary" aria-required="true" required=""/></p>
+<p><label for="addondescription">Add-on description*</label>
+<textarea name="addondescription" id="addondescription" required="" aria-required="true"></textarea></p>
+<p><label for="addonurl">Add-on URL*</label>
+<input type="url" name="addonurl" id="addonurl" required="" aria-required="true"/></p>
+<p><label for="addonowner">Add-on owner*</label>
 <select id="addonowner" name="addonowner" required="" aria-required="true">
 <?php
 $result=$db->query("select id, fullname from users");
@@ -138,11 +138,11 @@ while ($row=$result->fetchArray(SQLITE3_NUM)){
 }
 $result->finalize();
 ?>
-</select>
-<label for="log">Log message</label>
-<textarea id="log" name="log" title="Optional log message displayed for this operation"></textarea>
-<input type="submit" value="Submit"/>
-<button type="button" onclick="cancelEdit();">Cancel</button>
+</select></p>
+<p><label for="log">Log message</label>
+<textarea id="log" name="log" title="Optional log message displayed for this operation"></textarea></p>
+<p><input type="submit" value="Submit"/>
+<button type="button" onclick="cancelEdit();">Cancel</button></p>
 </form>
 </div>
 <?php
@@ -153,10 +153,10 @@ if ($_SESSION['role']!="0"){
 <form method="post" action="addons.php?action=delete" role="form">
 <p>Are you sure you want to remove this add-on from the database? All links, update channels and related information will be deleted too. This operation cannot be undone.</p>
 <input type="hidden" id="deleteaddon" name="deleteaddon"/>
-<label for="log2">Log message</label>
-<textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea>
-<input type="submit" id="confirmDelete" value="Delete add-on permanently"/>
-<button type="button" onclick="cancelRemove();">Cancel</button>
+<p><label for="log2">Log message</label>
+<textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea></p>
+<p><input type="submit" id="confirmDelete" value="Delete add-on permanently"/>
+<button type="button" onclick="cancelRemove();">Cancel</button></p>
 </form>
 </div>
 <?php

@@ -81,24 +81,24 @@ $result->finalize();
 <h2>Create or update user</h2>
 <form method="post" action="users.php?action=edit" role="form">
 <input type="hidden" name="userid" id="userid"/>
-<label for="username">User name*</label>
-<input type="text" name="username" id="username" required="" aria-required="true"/>
-<label for="fullname">Full name*</label>
-<input type="text" name="fullname" id="fullname" aria-required="true" required=""/>
-<label for="email">E-mail address*</label>
-<input type="email" name="email" id="email" required="" aria-required="true"/>
-<label for="password">Password*</label>
-<input type="text" name="password" id="password" required="" aria-required="true" title="Provide a password you don't use anywhere else. Leave empty if you are updating an user account and don't want to change the password"/>
-<label for="role">User role*</label>
+<p><label for="username">User name*</label>
+<input type="text" name="username" id="username" required="" aria-required="true"/></p>
+<p><label for="fullname">Full name*</label>
+<input type="text" name="fullname" id="fullname" aria-required="true" required=""/></p>
+<p><label for="email">E-mail address*</label>
+<input type="email" name="email" id="email" required="" aria-required="true"/></p>
+<p><label for="password">Password*</label>
+<input type="text" name="password" id="password" required="" aria-required="true" title="Provide a password you don't use anywhere else. Leave empty if you are updating an user account and don't want to change the password"/></p>
+<p><label for="role">User role*</label>
 <select id="role" name="role" required="" aria-required="true">
 <option id="optionAuthor" value="0">Author</option>
 <option id="optionReviewer" value="1">Reviewer</option>
 <option id="optionAdmin" value="2">Administrator</option>
-</select>
-<label for="log">Log message</label>
-<textarea id="log" name="log" title="Optional log message displayed for this operation"></textarea>
-<input type="submit" value="Submit"/>
-<button type="button" onclick="cancelEdit();">Cancel</button>
+</select></p>
+<p><label for="log">Log message</label>
+<textarea id="log" name="log" title="Optional log message displayed for this operation"></textarea></p>
+<p><input type="submit" value="Submit"/>
+<button type="button" onclick="cancelEdit();">Cancel</button></p>
 </form>
 </div>
 <div id="delete-form" style="display:none">
@@ -106,10 +106,10 @@ $result->finalize();
 <form method="post" action="users.php?action=delete" role="form">
 <p>Are you sure you want to remove this user from the database? This operation cannot be undone.</p>
 <input type="hidden" id="deleteuser" name="deleteuser"/>
-<label for="log2">Log message</label>
-<textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea>
-<input type="submit" id="confirmDelete" value="Delete user permanently"/>
-<button type="button" onclick="cancelRemove();">Cancel</button>
+<p><label for="log2">Log message</label>
+<textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea></p>
+<p><input type="submit" id="confirmDelete" value="Delete user permanently"/>
+<button type="button" onclick="cancelRemove();">Cancel</button></p>
 </form>
 </div>
 <script>
