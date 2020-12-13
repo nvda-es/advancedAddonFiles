@@ -22,7 +22,7 @@ This small PHP application is an evolution of the get.php script used to shorten
 ## Getting started
 
 1. Download or clone this repository to your computer.
-2. Edit config.php and change the default values (optional, but recommended). You can specify an absolute path to the database file. Ideally, it should be writable by the web server or the PHP process, but inaccessible from outside. The .htaccess file is nevertheless designed to protect this file if it ends with .db extension and is inside the directory which contains the application. The session name is used to create a session only for this application. It should be changed.
+2. Edit config.php and change the default values (optional, but recommended). You can specify an absolute path to the database file. Ideally, it should be writable by the web server or the PHP process, but inaccessible from outside. The .htaccess file is nevertheless designed to protect this file if it ends with .db extension and is inside the directory which contains the application. The session name is used to create a session only for this application. It should be changed. The base URL contains the full application URL, with an ending slash.
 3. If using Apache as your web server, ensure that the AllowOverride directive is set to All for your virtual host. Otherwise, the .htaccess file won't work.
 4. Upload the application to your web server.
 5. Visit the application URL and follow the instructions.

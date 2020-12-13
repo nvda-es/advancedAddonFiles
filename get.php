@@ -16,7 +16,7 @@ if (isset($_GET['file'])) {
 	$result=$db->query("select * from addons");
 	while ($row=$result->fetchArray(SQLITE3_ASSOC)){
 		$row["links"]=array();
-		$result2=$db->query("select file, version, channel, minimum, lasttested, link from links where id=".$row['id']);
+		$result2=$db->query("select file, version, channel, minimum, lasttested, link, downloads from links where id=".$row['id']);
 		while ($link=$result2->fetchArray(SQLITE3_ASSOC)){
 			$row['links'][]=$link;
 		}
@@ -26,10 +26,23 @@ if (isset($_GET['file'])) {
 	$result->finalize();
 	echo json_encode($addons);
 }else{
-	echo "<h1>Error:</h1>";
-	echo "<p>Please check that the link that brought you here is correct and try again.</p>";
-	echo "<p>If you continue to see this message report this error to the developers.</p>";
-	echo "<p>Thanks</p>";
+	include("header.php");
+	set_title("List of download links");
+?>
+<p>This page displays download links for all the add-ons registered on the system, so you can easily copy and share them.</p>
+<?php
+	$result=$db->query("select id, summary from addons order by id desc");
+	while ($row=$result->fetchArray(SQLITE3_ASSOC)){
+		echo "<h2>".$row['summary']."</h2>";
+		$result2=$db->query("select file, version, channel, downloads from links where id=".$row['id']);
+		while ($link=$result2->fetchArray(SQLITE3_ASSOC)){
+			echo "<h3>Channel ".$link['channel'].", version ".$link['version'].", downloaded ".$link['downloads']." times</h3>";
+			echo "<p><a href='get.php?file=".$link['file']."'>".$baseURL."get.php?file=".$link['file']."</a></p>";
+		}
+		$result2->finalize();
+	}
+	$result->finalize();
+	include("footer.php");
 }
 $db->close();
 ?>
