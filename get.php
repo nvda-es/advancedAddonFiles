@@ -26,6 +26,8 @@ if (isset($_GET['file'])) {
 	$result->finalize();
 	echo json_encode($addons);
 }else{
+	session_name($session_name);
+	session_start();
 	include("header.php");
 	set_title("List of download links");
 ?>
