@@ -28,10 +28,12 @@ if (isset($_SESSION['username'])){
 				$link=SQLite3::escapeString($_POST['link']);
 				if ($db->query("select file from links where file='".$file."'")->fetchArray(SQLITE3_NUM)){
 					logMessage($db, "Updated download information for add-on ".$addonid.". ".$_POST['log']);
-					$db->exec("update links set version='".$version."', channel='".$channel."', minimum='".$minimum."', lasttested='".$lasttested."', link='".$link."', downloads=0 where id=".$addonid." and file='".$file."'");
+					// If you run into problems with the line below, try opening the database file and running: "alter table links add modified text;"
+					$db->exec("update links set version='".$version."', channel='".$channel."', minimum='".$minimum."', lasttested='".$lasttested."', link='".$link."', downloads=0, modified=datetime('now') where id=".$addonid." and file='".$file."'");
 				}else{
 					logMessage($db, "Added download information for add-on ".$addonid.". ".$_POST['log']);
-					$db->exec("insert into links (id, file, version, channel, minimum, lasttested, link, downloads) values (".$addonid.", '".$file."', '".$version."', '".$channel."', '".$minimum."', '".$lasttested."', '".$link."', 0)");
+					// If you run into problems with the line below, try opening the database file and running: "alter table links add modified text;"
+					$db->exec("insert into links (id, file, version, channel, minimum, lasttested, link, downloads, modified) values (".$addonid.", '".$file."', '".$version."', '".$channel."', '".$minimum."', '".$lasttested."', '".$link."', 0, datetime('now'))");
 				}
 			}elseif ($_GET['action']=="delete"){
 				$db->exec("delete from links where file='".$file."'");
@@ -61,13 +63,15 @@ if (isset($_SESSION['username'])){
 <th>Last tested NVDA version</th>
 <th>Download URL</th>
 <th>Total downloads since last update</th>
+<th>Date updated</th>
 <th>Edit</th>
 <th>Remove</th>
 </tr>
 </thead>
 <tbody>
 <?php
-$result=$db->query("select file, version, channel, minimum, lasttested, link, downloads from links where id=".$addonid);
+// If you run into problems with the line below, try opening the database file and running: "alter table links add modified text;"
+$result=$db->query("select file, version, channel, minimum, lasttested, link, downloads, modified from links where id=".$addonid);
 while ($row=$result->fetchArray(SQLITE3_NUM)){
 	echo "<tr id='".$row[0]."'>\n";
 	foreach ($row as $item){
