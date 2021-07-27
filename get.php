@@ -16,7 +16,8 @@ if (isset($_GET['file'])) {
 	$result=$db->query("select * from addons");
 	while ($row=$result->fetchArray(SQLITE3_ASSOC)){
 		$row["links"]=array();
-		$result2=$db->query("select file, version, channel, minimum, lasttested, link, downloads from links where id=".$row['id']);
+		// If you run into problems with the line below, try opening the database file and running: "alter table links add modified text;"
+		$result2=$db->query("select file, version, channel, minimum, lasttested, link, downloads, modified from links where id=".$row['id']);
 		while ($link=$result2->fetchArray(SQLITE3_ASSOC)){
 			$row['links'][]=$link;
 		}
