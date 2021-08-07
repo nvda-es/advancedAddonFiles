@@ -104,7 +104,7 @@ if ($_SESSION['role']!="0"){
 <?php
 $query="select * from addons order by id desc";
 if ($_SESSION['role']=="0"){
-	$query="select * from addons, permissions where addons.id=permissions.addon and permissions.user=".$_SESSION['id'];
+	$query="select id, author, name, summary, description, url, legacy from addons inner join permissions on addons.id=permissions.addon where permissions.user=".$_SESSION['id'];
 }
 $result=$db->query($query);
 while ($row=$result->fetchArray(SQLITE3_NUM)){
