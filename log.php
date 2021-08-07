@@ -34,7 +34,7 @@ echo "<a href='log.php?p=".strval($p+1)."'>Next page</a><br/>";
 }
 while ($row=$result->fetchArray(SQLITE3_ASSOC)){
 	echo "<h2>".$row['date'].", ".$row['user']."</h2>";
-	echo "<p>".$row['message']."</p>";
+	echo "<p>".htmlspecialchars($row['message'])."</p>";
 }
 $result->finalize();
 $db->close();
