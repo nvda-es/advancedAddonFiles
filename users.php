@@ -3,11 +3,13 @@ include ("config.php");
 session_name($session_name);
 session_start();
 if (isset($_SESSION['username'])){
+	$db=new SQLite3($db_file);
 	if ($_SESSION['role']!="2"){
 		logMessage($db, "Attempt to manage user accounts without the required privileges");
 		header("Location: index.php");
+		$db->close();
+		die("Attempt to manage user accounts without the required privileges");
 	}
-	$db=new SQLite3($db_file);
 	if (isset($_GET['action'])){
 		if ($_GET['action']=="edit"){
 			$username=SQLite3::escapeString($_POST['username']);
