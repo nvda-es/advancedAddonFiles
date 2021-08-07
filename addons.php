@@ -26,11 +26,25 @@ if (isset($_SESSION['username'])){
 					die("Permission denied. You don't have enough privileges to register new add-ons");
 				}
 				$addonid=$db->query("select count(*) from addons")->fetchArray()[0];
-				$db->exec("insert into addons (id, author, name, summary, description, url) values (".$addonid.", '".$addonauthor."', '".$addonname."', '".$addonsummary."', '".$addondescription."', '".$addonurl."')");
+				$query = "insert into addons (id, author, name, summary, description, url, legacy) values (".$addonid.", '".$addonauthor."', '".$addonname."', '".$addonsummary."', '".$addondescription."', '".$addonurl."', ";
+				if (isset($_POST['legacy'])){
+					$query = $query."1";
+				}else{
+					$query = $query."0";
+				}
+				$query = $query.")";
+				$db->exec($query);
 				$db->exec("insert into permissions (user, addon) values (".$addonowner.", ".$addonid.")");
 				logMessage($db, "Registered new add-on: ".$addonname.". ".$_POST['log']);
 			}else{
-				$db->exec("update addons set name='".$addonname."', author='".$addonauthor."', summary='".$addonsummary."', description='".$addondescription."', url='".$addonurl."' where id=".$addonid);
+				$query = "update addons set name='".$addonname."', author='".$addonauthor."', summary='".$addonsummary."', description='".$addondescription."', url='".$addonurl."', legacy=";
+				if (isset($_POST['legacy'])){
+					$query = $query."1";
+				}else{
+					$query = $query."0";
+				}
+				$query = $query." where id=".$addonid
+				$db->exec($query);
 				$db->exec("update permissions set user=".$addonowner." where addon=".$addonid);
 				logMessage($db, "Updated add-on: ".$addonname.". ".$_POST['log']);
 			}
@@ -75,6 +89,7 @@ if ($_SESSION['role']!="0"){
 <th>Summary</th>
 <th>Description</th>
 <th>URL</th>
+<th>Is legacy</th>
 <th>Edit</th>
 <?php
 if ($_SESSION['role']!="0"){
@@ -125,6 +140,8 @@ $result->finalize();
 <textarea name="addondescription" id="addondescription" required="" aria-required="true"></textarea></p>
 <p><label for="addonurl">Add-on URL*</label>
 <input type="url" name="addonurl" id="addonurl" required="" aria-required="true"/></p>
+<p><label for="legacy">This is a legacy add-on</label>
+<input type="checkbox" id="legacy" name="legacy" value="1"/></p>
 <p><label for="addonowner">Add-on owner*</label>
 <select id="addonowner" name="addonowner" required="" aria-required="true">
 <?php
@@ -177,6 +194,7 @@ var addonsummary=document.getElementById("addonsummary");
 var addondescription=document.getElementById("addondescription");
 var addonurl=document.getElementById("addonurl");
 var addonauthor=document.getElementById("addonauthor");
+var legacy=document.getElementById("legacy");
 var editform=document.getElementById("edit-form");
 var focusElement=null;
 function editAddon(e){
@@ -188,6 +206,11 @@ function editAddon(e){
 	addonsummary.value=row.childNodes[7].textContent;
 	addondescription.value=row.childNodes[9].textContent;
 	addonurl.value=row.childNodes[11].textContent;
+	if (row.childNodes[13].textContent=="1"){
+		legacy.setAttribute("checked", "checked");
+	}else{
+		legacy.removeAttribute("checked");
+	}
 	editform.style.display="block";
 	addonauthor.focus();
 }
@@ -227,6 +250,7 @@ function cancelEdit(e){
 	addonsummary.value="";
 	addondescription.value="";
 	addonurl.value="";
+	legacy.removeAttribute("checked");
 }
 </script>
 <?php
