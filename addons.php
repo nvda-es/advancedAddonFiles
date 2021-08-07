@@ -43,7 +43,7 @@ if (isset($_SESSION['username'])){
 				}else{
 					$query = $query."0";
 				}
-				$query = $query." where id=".$addonid
+				$query = $query." where id=".$addonid;
 				$db->exec($query);
 				$db->exec("update permissions set user=".$addonowner." where addon=".$addonid);
 				logMessage($db, "Updated add-on: ".$addonname.". ".$_POST['log']);
