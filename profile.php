@@ -5,6 +5,9 @@ session_start();
 if (isset($_SESSION['username'])){
 	$db=new SQLite3($db_file);
 	if (isset($_POST['update'])){
+		if (!isset($_POST['token']) || $_POST['token'] != $_SESSION['token']){
+			die("Invalid CSRF token provided.");
+		}
 		$fullname=SQLite3::escapeString($_POST['fullname']);
 		$email=SQLite3::escapeString($_POST['email']);
 		$password=SQLite3::escapeString($_POST['password']);
@@ -28,6 +31,7 @@ if (isset($_SESSION['username'])){
 ?>
 <p>On this page, you can view and update your account details. Please, leave password field empty if you don't want to change it. Your user name is <?php echo $username; ?>, and can't be changed. If you want to change your user name, contact an administrator.</p>
 <form method="post" action="profile.php" role="form">
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <label for="fullname">Full name*</label>
 <input type="text" id="fullname" name="fullname" required="" aria-required="true" value="<?php echo $fullname; ?>"/>
 <label for="email">E-mail address*</label>

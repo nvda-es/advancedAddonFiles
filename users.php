@@ -11,6 +11,9 @@ if (isset($_SESSION['username'])){
 		die("Attempt to manage user accounts without the required privileges");
 	}
 	if (isset($_GET['action'])){
+		if (!isset($_POST['token']) || $_POST['token'] != $_SESSION['token']){
+			die("Invalid CSRF token provided.");
+		}
 		if ($_GET['action']=="edit"){
 			$username=SQLite3::escapeString($_POST['username']);
 			$fullname=SQLite3::escapeString($_POST['fullname']);
@@ -83,6 +86,7 @@ $result->finalize();
 <h2>Create or update user</h2>
 <form method="post" action="users.php?action=edit" role="form">
 <input type="hidden" name="userid" id="userid"/>
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="username">User name*</label>
 <input type="text" name="username" id="username" required="" aria-required="true"/></p>
 <p><label for="fullname">Full name*</label>
@@ -108,6 +112,7 @@ $result->finalize();
 <form method="post" action="users.php?action=delete" role="form">
 <p>Are you sure you want to remove this user from the database? This operation cannot be undone.</p>
 <input type="hidden" id="deleteuser" name="deleteuser"/>
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="log2">Log message</label>
 <textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea></p>
 <p><input type="submit" id="confirmDelete" value="Delete user permanently"/>

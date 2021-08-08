@@ -12,6 +12,9 @@ if (isset($_SESSION['username'])){
 				die("Permission denied. You cannot perform actions on this add-on.");
 			}
 		}
+		if (!isset($_POST['token']) || $_POST['token'] != $_SESSION['token']){
+			die("Invalid CSRF token provided.");
+		}
 		if ($_GET['action']=="edit"){
 			$addonid=SQLite3::escapeString($_POST['addonid']);
 			$addonauthor=SQLite3::escapeString($_POST['addonauthor']);
@@ -130,6 +133,7 @@ $result->finalize();
 <h2>Create or update add-on</h2>
 <form method="post" action="addons.php?action=edit" role="form">
 <input type="hidden" name="addonid" id="addonid"/>
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="addonauthor">Add-on author*</label>
 <input type="text" id="addonauthor" name="addonauthor" required="" aria-required="true"/></p>
 <p><label for="addonname">Add-on name*</label>
@@ -170,6 +174,7 @@ if ($_SESSION['role']!="0"){
 <form method="post" action="addons.php?action=delete" role="form">
 <p>Are you sure you want to remove this add-on from the database? All links, update channels and related information will be deleted too. This operation cannot be undone.</p>
 <input type="hidden" id="deleteaddon" name="deleteaddon"/>
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="log2">Log message</label>
 <textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea></p>
 <p><input type="submit" id="confirmDelete" value="Delete add-on permanently"/>

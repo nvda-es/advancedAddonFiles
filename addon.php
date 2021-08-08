@@ -19,6 +19,9 @@ if (isset($_SESSION['username'])){
 			}
 		}
 		if (isset($_GET['action'])){
+			if (!isset($_POST['token']) || $_POST['token'] != $_SESSION['token']){
+				die("Invalid CSRF token provided.");
+			}
 			$file=SQLite3::escapeString($_POST['file']);
 			if ($_GET['action']=="edit"){
 				$version=SQLite3::escapeString($_POST['version']);
@@ -88,6 +91,7 @@ $result->finalize();
 <div id="edit-form" style="display:none">
 <h2>Create or update download link for this add-on</h2>
 <form method="post" action="addon.php?action=edit&id=<?php echo $addonid; ?>" role="form">
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="file">Add-on key*</label>
 <input type="text" required="" aria-required="true" id="file" name="file" title="Short string used to redirect the user to the download link"/></p>
 <p><label for="version">Add-on version*</label>
@@ -109,6 +113,7 @@ $result->finalize();
 <div id="delete-form" style="display:none">
 <h2>Delete download link from database</h2>
 <form method="post" action="addon.php?action=delete&id=<?php echo $addonid; ?>" role="form">
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p>Are you sure you want to remove this download link from the database? This operation cannot be undone.</p>
 <input type="hidden" id="deletelink" name="file"/>
 <p><label for="log2">Log message</label>
