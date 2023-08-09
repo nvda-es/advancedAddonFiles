@@ -88,8 +88,8 @@ $result->finalize();
 ?>
 </tbody>
 </table>
-<div id="edit-form" style="display:none">
-<h2>Create or update download link for this add-on</h2>
+<div id="edit-form" style="display:none" role="dialog" aria-labelledby="edit-form-title">
+<h2 id="edit-form-title">Create or update download link for this add-on</h2>
 <form method="post" action="addon.php?action=edit&id=<?php echo $addonid; ?>" role="form">
 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="file">Add-on key*</label>
@@ -110,11 +110,11 @@ $result->finalize();
 <button type="button" onclick="cancelEdit();">Cancel</button></p>
 </form>
 </div>
-<div id="delete-form" style="display:none">
-<h2>Delete download link from database</h2>
+<div id="delete-form" style="display:none" role="dialog" aria-labelledby="delete-form-title" aria-describedby="delete-form-description">
+<h2 id="delete-form-title">Delete download link from database</h2>
 <form method="post" action="addon.php?action=delete&id=<?php echo $addonid; ?>" role="form">
 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
-<p>Are you sure you want to remove this download link from the database? This operation cannot be undone.</p>
+<p id="delete-form-description">Are you sure you want to remove this download link from the database? This operation cannot be undone.</p>
 <input type="hidden" id="deletelink" name="file"/>
 <p><label for="log2">Log message</label>
 <textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea></p>

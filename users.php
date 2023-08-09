@@ -82,8 +82,8 @@ $result->finalize();
 ?>
 </tbody>
 </table>
-<div id="edit-form" style="display:none">
-<h2>Create or update user</h2>
+<div id="edit-form" style="display:none" role="dialog" aria-labelledby="edit-form-title">
+<h2 id="edit-form-title">Create or update user</h2>
 <form method="post" action="users.php?action=edit" role="form">
 <input type="hidden" name="userid" id="userid"/>
 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
@@ -107,10 +107,10 @@ $result->finalize();
 <button type="button" onclick="cancelEdit();">Cancel</button></p>
 </form>
 </div>
-<div id="delete-form" style="display:none">
-<h2>Delete user from database</h2>
+<div id="delete-form" style="display:none" role="dialog" aria-labelledby="delete-form-title" aria-describedby="delete-form-description">
+<h2 id="delete-form-title">Delete user from database</h2>
 <form method="post" action="users.php?action=delete" role="form">
-<p>Are you sure you want to remove this user from the database? This operation cannot be undone.</p>
+<p id="delete-form-description">Are you sure you want to remove this user from the database? This operation cannot be undone.</p>
 <input type="hidden" id="deleteuser" name="deleteuser"/>
 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="log2">Log message</label>
