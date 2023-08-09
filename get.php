@@ -2,7 +2,7 @@
 include ("config.php");
 $db=new SQLite3($db_file);
 if (isset($_GET['file'])) {
-	$result=$db->query("select link, downloads from links where file='".SQLite3::escapeString($_GET['file'])."'");
+	$result=$db->query("select link, downloads from links where hidden=0 and file='".SQLite3::escapeString($_GET['file'])."'");
 	if ($row = $result->fetchArray(SQLITE3_NUM)){
 		$downloads=intval($row[1])+1;
 		$db->exec("update links set downloads=".strval($downloads)." where file='".SQLite3::escapeString($_GET['file'])."'");
@@ -13,7 +13,7 @@ if (isset($_GET['file'])) {
 	$result->finalize();
 } else If (isset($_GET['addonslist'])) {
 	$addons=array();
-	$result=$db->query("select * from addons");
+	$result=$db->query("select * from addons where hidden=0");
 	while ($row=$result->fetchArray(SQLITE3_ASSOC)){
 		$row["links"]=array();
 		// If you run into problems with the line below, try opening the database file and running: "alter table links add modified text;"
@@ -34,7 +34,7 @@ if (isset($_GET['file'])) {
 ?>
 <p>This page displays download links for all the add-ons registered on the system, so you can easily copy and share them.</p>
 <?php
-	$result=$db->query("select id, summary from addons order by id desc");
+	$result=$db->query("select id, summary from addons where hidden=0 order by id desc");
 	while ($row=$result->fetchArray(SQLITE3_ASSOC)){
 		echo "<h2>".$row['summary']."</h2>";
 		$result2=$db->query("select file, version, channel, downloads from links where id=".$row['id']);

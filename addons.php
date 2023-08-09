@@ -64,6 +64,14 @@ if (isset($_SESSION['username'])){
 			$db->exec("update links set id=id-1 where id>".$addonid);
 			$db->exec("update permissions set addon=addon-1 where addon>".$addonid);
 			logMessage($db, "Deleted add-on with id: ".$addonid.". ".$_POST['log']);
+		}elseif ($_GET['action']=="hide"){
+			if ($_SESSION['role']=="0"){
+				logMessage($db, "Attempt to hide an add-on without required privileges.");
+				die("Permission denied. You don't have enough privileges to hide new add-ons");
+			}
+			$addonid=SQLite3::escapeString($_POST['hideaddon']);
+			$db->exec("update addons set hidden=1 where id=".$addonid);
+			$db->exec("update links set hidden=1 where id=".$addonid);
 		}else{
 			logMessage($db, "Attempt to perform an unrecognized action on the system");
 			die("Unrecognized action. Please, don't try to change manually the URLs from your web browser address bar. Use the interface provided by this application instead.");
@@ -93,11 +101,13 @@ if ($_SESSION['role']!="0"){
 <th>Description</th>
 <th>URL</th>
 <th>Is legacy</th>
+<th>Is hidden</th>
 <th>Edit</th>
 <?php
 if ($_SESSION['role']!="0"){
 ?>
 <th>Remove</th>
+<th>Hide</th>
 <?php
 }
 ?>
@@ -122,6 +132,7 @@ while ($row=$result->fetchArray(SQLITE3_NUM)){
 	echo "<td><button>Edit</button></td>\n";
 	if ($_SESSION['role']!="0"){
 		echo "<td><button>Remove</button></td>\n";
+		echo "<td><button>Hide</button></td>\n";
 	}
 	echo "</tr>\n";
 }
@@ -129,8 +140,8 @@ $result->finalize();
 ?>
 </tbody>
 </table>
-<div role="dialog" id="edit-form" style="display:none">
-<h2>Create or update add-on</h2>
+<div role="dialog" id="edit-form" style="display:none" aria-labelledby="edit-form-title">
+<h2 id="edit-form-title">Create or update add-on</h2>
 <form method="post" action="addons.php?action=edit" role="form">
 <input type="hidden" name="addonid" id="addonid"/>
 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
@@ -169,16 +180,26 @@ $result->finalize();
 <?php
 if ($_SESSION['role']!="0"){
 ?>
-<div role="dialog" id="delete-form" style="display:none">
-<h2>Delete add-on from database</h2>
+<div role="dialog" id="delete-form" style="display:none" aria-labelledby="delete-form-title" aria-describedby="delete-form-description">
+<h2 id="delete-form-title">Delete add-on from database</h2>
 <form method="post" action="addons.php?action=delete" role="form">
-<p>Are you sure you want to remove this add-on from the database? All links, update channels and related information will be deleted too. This operation cannot be undone.</p>
+<p id="delete-form-description">Are you sure you want to remove this add-on from the database? All links, update channels and related information will be deleted too. This operation cannot be undone.</p>
 <input type="hidden" id="deleteaddon" name="deleteaddon"/>
 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 <p><label for="log2">Log message</label>
 <textarea id="log2" name="log" title="Optional log message displayed for this operation"></textarea></p>
 <p><input type="submit" id="confirmDelete" value="Delete add-on permanently"/>
 <button type="button" onclick="cancelRemove();">Cancel</button></p>
+</form>
+</div>
+<div role="dialog" id="hide-form" style="display:none" aria-labelledby="hide-form-title" aria-describedby="hide-form-description">
+<h2 id="hide-form-title">Hide add-on</h2>
+<form method="post" action="addons.php?action=hide" role="form">
+<p id="hide-form-description">Are you sure you want to hide this add-on? All links, update channels and related information will not be accessible to the public. This operation only can be undone by an administrator with direct access to the database file.</p>
+<input type="hidden" id="hideaddon" name="hideaddon"/>
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
+<p><input type="submit" id="confirmHide" value="Hide add-on"/>
+<button type="button" onclick="cancelHide();">Cancel</button></p>
 </form>
 </div>
 <?php
@@ -191,6 +212,8 @@ for (let i=0; i<buttons.length; i++){
 		buttons[i].addEventListener("click", editAddon);
 	}else if (buttons[i].textContent=="Remove"){
 		buttons[i].addEventListener("click", removeAddon);
+	}else if (buttons[i].textContent=="Hide"){
+		buttons[i].addEventListener("click", hideAddon);
 	}
 }
 var addonid=document.getElementById("addonid");
@@ -230,6 +253,14 @@ function removeAddon(e){
 	deleteform.style.display="block";
 	document.getElementById("confirmDelete").focus();
 }
+var hideform=document.getElementById("hide-form");
+var hideaddon=document.getElementById("hideaddon");
+function hideAddon(e){
+	focusElement=e.target;
+	hideaddon.value=this.parentNode.parentNode.id;
+	hideform.style.display="block";
+	document.getElementById("confirmHide").focus();
+}
 function newaddon(e){
 	focusElement=e.target;
 	editform.style.display="block";
@@ -241,6 +272,12 @@ function cancelRemove(e){
 	deleteform.style.display="none";
 	focusElement=null;
 	deleteaddon.value="";
+}
+function cancelHide(e){
+	focusElement.focus();
+	hideform.style.display="none";
+	focusElement=null;
+	hideaddon.value="";
 }
 <?php
 }

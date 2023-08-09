@@ -42,6 +42,8 @@ addons table:
 * summary: text
 * description: text
 * url: text
+* legacy: integer
+* hidden: integer
 
 links table:
 * id: integer (add-on identifier from add-ons table)
@@ -52,6 +54,7 @@ links table:
 * lasttested: text (year.version.0)
 * downloads: integer
 * link: text
+* hidden: integer
 
 permissions table:
 * user integer
