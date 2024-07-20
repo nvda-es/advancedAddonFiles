@@ -59,7 +59,7 @@ switch (intval($_SESSION['role'])){
 <?php
 }
 ?>
-<main id="main" role="main">
+<main id="main" role="main" tabindex="-1">
 <header role="banner">
 <h1><?php echo $title; ?></h1>
 </header>
