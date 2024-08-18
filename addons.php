@@ -126,7 +126,7 @@ while ($row=$result->fetchArray(SQLITE3_NUM)){
 		if ($item===$row[0]){
 			echo "<th scope='row'><a href='addon.php?id=".$row[0]."'>".$item."</a></th>\n";
 		}else{
-			echo "<td>".$item."</td>\n";
+			echo "<td>".htmlspecialchars($item, ENT_QUOTES|ENT_HTML5, "UTF-8", true)."</td>\n";
 		}
 	}
 	echo "<td><button>Edit</button></td>\n";
