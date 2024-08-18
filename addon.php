@@ -9,8 +9,8 @@ if (isset($_SESSION['username'])){
 		die("You must specify an add-on identifier in the URL.");
 	}
 	$addonid=SQLite3::escapeString($_GET['id']);
-	$addonexists=$db->query("select id from addons where id=".$addonid);
-	if ($addonexists->fetchArray(SQLITE3_NUM)){
+	$addonexists=$db->query("select id, name from addons where id=".$addonid);
+	if ($addoninfo=$addonexists->fetchArray(SQLITE3_NUM)){
 		if ($_SESSION['role']=="0"){
 			$result=$db->query("select * from permissions where user=".$_SESSION['id']." and addon=".$addonid);
 			if (!$result->fetchArray(SQLITE3_NUM)){
@@ -18,6 +18,7 @@ if (isset($_SESSION['username'])){
 				die("Permission denied. You cannot perform actions on this add-on.");
 			}
 		}
+		$addonname=$addoninfo[1];
 		if (isset($_GET['action'])){
 			if (!isset($_POST['token']) || $_POST['token'] != $_SESSION['token']){
 				die("Invalid CSRF token provided.");
@@ -30,17 +31,17 @@ if (isset($_SESSION['username'])){
 				$lasttested=SQLite3::escapeString($_POST['lasttested']);
 				$link=SQLite3::escapeString($_POST['link']);
 				if ($db->query("select file from links where file='".$file."'")->fetchArray(SQLITE3_NUM)){
-					logMessage($db, "Updated download information for add-on ".$addonid.". ".$_POST['log']);
+					logMessage($db, "Updated download information for add-on ".$addonname.". Version ".$version.", channel ".$channel.". ".$_POST['log']);
 					// If you run into problems with the line below, try opening the database file and running: "alter table links add modified text;"
 					$db->exec("update links set version='".$version."', channel='".$channel."', minimum='".$minimum."', lasttested='".$lasttested."', link='".$link."', downloads=0, modified=datetime('now') where id=".$addonid." and file='".$file."'");
 				}else{
-					logMessage($db, "Added download information for add-on ".$addonid.". ".$_POST['log']);
+					logMessage($db, "Added download information for add-on ".$addonname.". Version ".$version.", channel ".$channel.". ".$_POST['log']);
 					// If you run into problems with the line below, try opening the database file and running: "alter table links add modified text;"
 					$db->exec("insert into links (id, file, version, channel, minimum, lasttested, link, downloads, modified) values (".$addonid.", '".$file."', '".$version."', '".$channel."', '".$minimum."', '".$lasttested."', '".$link."', 0, datetime('now'))");
 				}
 			}elseif ($_GET['action']=="delete"){
 				$db->exec("delete from links where file='".$file."'");
-				logMessage($db, "Removed download information for add-on ".$addonid.". ".$_POST['log']);
+				logMessage($db, "Removed download information for add-on ".$addonname.". ".$_POST['log']);
 			}else{
 				logMessage($db, "Attempt to perform an unrecognized action on the system");
 				die("Unrecognized action. Please, don't try to change manually the URLs from your web browser address bar. Use the interface provided by this application instead.");
@@ -48,7 +49,6 @@ if (isset($_SESSION['username'])){
 			header("location: addon.php?id=".$addonid);
 		}else{
 			include ("header.php");
-			$addonname=$db->query("select name from addons where id=".$addonid)->fetchArray(SQLITE3_NUM)[0];
 			set_title("Manage add-on download links for ".$addonname);
 ?>
 <p>On this page, you can manage the download links for the selected add-on.</p>
